@@ -1,0 +1,81 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class wc {
+	static int countline(String path) throws IOException {
+		BufferedReader inputStream = null;
+		int lcount = 0;
+
+		try {
+			inputStream = new BufferedReader(new FileReader(path));
+			String l;
+			while ((l = inputStream.readLine()) != null) {
+				lcount++;
+			}
+			return lcount;
+		} finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		}
+	}
+
+	static int countchar(String path) throws IOException {
+		FileReader inputStream = null;
+		int ccount = 0;
+
+		try {
+			inputStream = new FileReader(path);
+
+			int c;
+			while ((c = inputStream.read()) != -1) {
+				if (c != '\r' && c != '\n' && c != ' ')
+					ccount++;
+			}
+			return ccount;
+		} finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		}
+	}
+
+	static int countword(String path) throws FileNotFoundException {
+		Scanner s = null;
+		int wordcount = 0;
+		try {
+			s = new Scanner(new BufferedReader(new FileReader(path)));
+			while (s.hasNext()) {
+				s.next();
+				wordcount++;
+			}
+			return wordcount;
+
+		} finally {
+			if (s != null) {
+				s.close();
+			}
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
+		if (args.length == 1) {
+			System.out.println("行数为" + countline(args[0]) + "\n");
+			System.out.println("字符数为" + countchar(args[0]) + "\n");
+			System.out.println("字数为" + countword(args[0]) + "\n");
+		} else if (args.length == 2) {
+			if (args[0].contentEquals("-l")) {
+				System.out.println("行数为" + countline(args[1]) + "\n");
+			}
+			if (args[0].contentEquals("-c")) {
+				System.out.println("字符数为" + countchar(args[1]) + "\n");
+			}
+			if (args[0].contentEquals("-w")) {
+				System.out.println("字数为" + countword(args[1]) + "\n");
+			}
+		} else {
+			System.out.println("使用方法：\n1.java wc 命令 文件\n" + "命令：-l 显示行数"
+					+ "      -c 显示字符数" + "      -w 显示字数\n" + "2.java wc 文件名");
+		}
+	}
+}
